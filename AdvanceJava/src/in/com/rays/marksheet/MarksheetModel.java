@@ -81,14 +81,32 @@ public static void deleteRecord(int id) throws Exception  {
 		}
 		return bean;
 	}
-    public List search() throws Exception {
+    public List search( MarksheetBean bean,int page_no,int page_size) throws Exception {
     	Class.forName("com.mysql.cj.jdbc.Driver");
     	Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/advance_java06","root","root");
-    	PreparedStatement ps=conn.prepareStatement("select * from marksheet ");
+        StringBuffer sql=new StringBuffer("select * from marksheet where 1=1");
+    	
+    	if(bean!=null) {
+    		if(bean.getName()!=null && bean.getName().length()>0) {
+    			sql.append(" and name like '"+ bean.getName() + "%'");
+    		}
+    		if(bean.getRoll_no()>0) {
+    			sql.append(" and roll_no = "+ bean.getRoll_no() );
+    		}
+    	
+    		if(page_size>0) {
+    			page_no=(page_no-1)* page_size;
+    			sql.append(" limit "+ page_no +", "+ page_size);
+    		}
+    	}
+    	System.out.println(sql);
+    	PreparedStatement ps=conn.prepareStatement(sql.toString());
     	ResultSet rs=ps.executeQuery();
     	List list=new ArrayList();
     	while(rs.next()) {
-    		MarksheetBean bean=new MarksheetBean();
+    		 bean=new MarksheetBean();
+    		 
+       
     		bean.setId(rs.getInt(1));
     		bean.setName(rs.getString(2));
     		bean.setRoll_no(rs.getInt(3));

@@ -10,7 +10,7 @@ public class TestMarksheet {
      // testDelete();
 		//testUpdate();
 		//testFindByPk();
-		//testSearch();
+		testSearch();
 		
 	}
 	
@@ -18,10 +18,13 @@ public class TestMarksheet {
 
 	public static void testSearch() throws Exception  {
 		MarksheetModel model =new MarksheetModel();
-		List list=model.search();
+		MarksheetBean bean =new MarksheetBean();
+		bean.setName("R");
+		//bean.setRoll_no(102);
+		List list=model.search(bean,1,5);
 		Iterator it=list.iterator();
 		while(it.hasNext()) {
-			MarksheetBean bean=(MarksheetBean) it.next();
+			bean=(MarksheetBean) it.next();
 		System.out.print(bean.getId());
 		System.out.print("\t"+bean.getName());
 		System.out.print("\t"+bean.getRoll_no());
