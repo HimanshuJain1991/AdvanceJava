@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import in.co.rays.bean.UserBean;
+
 import in.co.rays.model.UserModel;
 
 public class TestUser {
@@ -14,13 +15,32 @@ public class TestUser {
 //			testFindByPk();
 //			System.out.println(i);
 //		}
-		testAddData();
+		//testAddData();
 		//testDelete();
 		//testUpdate();
-		
-		//testSearch();
+		//testSearch2();
+		testSearch();
 		//testAuthonticate();
 
+	}
+
+
+
+	private static void testSearch2() throws Exception {
+		// TODO Auto-generated method stub
+		UserModel model=new UserModel();
+		List list= model.search2();
+		Iterator it=list.iterator();
+		while(it.hasNext()) {
+			UserBean bean=(UserBean) it.next();
+		    System.out.print(bean.getId());
+		    System.out.print("\t"+bean.getFirstName());
+		    System.out.print("\t"+bean.getLastName());
+		    System.out.print("\t"+bean.getLoginId());
+		    System.out.print("\t"+bean.getPassword());
+		    System.out.println("\t"+bean.getDob());
+		    System.out.println("\t"+bean.getAddress());
+		}
 	}
 
 
@@ -77,7 +97,7 @@ public class TestUser {
 		UserModel model =new UserModel();
 		UserBean bean =new UserBean();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		bean.setDob(sdf.parse("2001-01-01"));
+		//bean.setDob(sdf.parse("2001-01-01"));
 
 		List list=model.search(bean,1,5);
 		Iterator it=list.iterator();
@@ -97,7 +117,7 @@ public class TestUser {
 	private static void testAuthonticate() throws Exception{
 		
 	UserModel model= new UserModel();
-	UserBean bean=model.authonticate("himanshu@gmail.com", "456");
+	UserBean bean=model.authenticate("himanshu@gmail.com", "456");
 	if(bean!=null) {
 		System.out.print(bean.getId());
 		System.out.print(bean.getFirstName());

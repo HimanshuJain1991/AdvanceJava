@@ -8,6 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.mysql.cj.Session;
 
 import in.co.rays.bean.UserBean;
 import in.co.rays.model.UserModel;
@@ -15,28 +18,54 @@ import in.co.rays.model.UserModel;
 public class LoginPageCtl extends HttpServlet {
   @Override
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	// TODO Auto-generated method stub
-	super.doGet(req, resp);
+	String ope=req.getParameter("operation");
+	if(ope!=null) {	
+	HttpSession session=req.getSession();
+	session.invalidate();
+	
+	}
+	resp.sendRedirect("LoginPageView.jsp"); 
+	 
 	
 }
   @Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String loginid=req.getParameter("loginId");
 		String password=req.getParameter("password");
+		String uri=req.getParameter("uri");
 		System.out.println(loginid);
 		System.out.println(password);
 		UserModel model=new UserModel();
-		UserBean bean=new UserBean();
+		
 		try {
-			bean=model.authonticate(loginid, password);
+		UserBean bean=model.authenticate(loginid, password);
 			if(bean!=null) {
-				RequestDispatcher rs=req.getRequestDispatcher("Hello.jsp");
-			rs.forward(req, resp);
+				HttpSession session= req.getSession();
+			//	session.setMaxInactiveInterval(10);
+				session.setAttribute("user", bean);
+				if(uri.equalsIgnoreCase("null")) {
+					resp.sendRedirect("Welcome1Ctl");
+				}
+				else {
+					resp.sendRedirect(uri);
+				
+				
+				
+			//	req.setAttribute("user", bean);
+//				RequestDispatcher rs=req.getRequestDispatcher("WelcomeView1.jsp");
+//		    	rs.forward(req, resp);
+				}
+				}
+			else {
+				req.setAttribute("msg", "Wrong id & password");
+				RequestDispatcher rs=req.getRequestDispatcher("LoginPageView.jsp");
+		    	rs.forward(req, resp);
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		resp.sendRedirect("LoginPageView.jsp");
+		//resp.sendRedirect("LoginPageView.jsp");
 	}
 }

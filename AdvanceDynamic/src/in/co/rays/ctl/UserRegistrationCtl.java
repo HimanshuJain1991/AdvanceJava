@@ -52,8 +52,10 @@ public class UserRegistrationCtl extends HttpServlet {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-     // RequestDispatcher rd=req.getRequestDispatcher("LoginPageCtl");
-      //rd.forward(req, resp);
+//     req.setAttribute("msg", o);
+//      RequestDispatcher rd=req.getRequestDispatcher("LoginPageCtl");
+//      
+//      rd.forward(req, resp);
     //  resp.sendRedirect("LoginPageView.jsp");
 	}
 
